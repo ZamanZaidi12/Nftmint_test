@@ -1,0 +1,8 @@
+{
+  "network": "mumbai",
+  "contractAddress": "0x141961111a91930e7d3B698a661FfeeE99c43Fec",
+  "deployer": "0x8Ca56c4a1aFbdfFb3f931Fa58d8E5C144F052aD0",
+  "mintPrice": "1.0",
+  "baseURI": "ipfs://QmYourCIDHere/",
+  "deployedAt": "2026-03-25T21:25:55.828Z"
+}
