@@ -1,6 +1,6 @@
 # 🖼️ Polygon NFT Minting System
 
-A production-ready NFT minting system built on the **Polygon Mumbai testnet** comprising:
+A production-ready NFT minting system built on the **Polygon Amoy testnet** comprising:
 
 - **ERC-721 Smart Contract** — fixed supply of 5, configurable mint price, reentrancy-safe
 - **Express REST API** — `/mint` endpoint with wallet validation and error handling
@@ -87,7 +87,7 @@ npm run compile
 ### Deploy to Polygon Mumbai
 
 ```bash
-npm run deploy:mumbai
+npm run deploy:amoy
 ```
 
 The script will:
@@ -116,7 +116,7 @@ npm run deploy:local
 
 ---
 
-## 🌐 Running the API
+## Running the API
 
 ### Development (with auto-reload)
 
@@ -204,13 +204,6 @@ curl -X POST http://localhost:3000/mint \
 npm run test:contracts
 ```
 
-Covers:
-- ✅ Successful mint and token ID assignment
-- ✅ Supply limit enforcement (revert on 6th mint)
-- ✅ Payment validation (exact, underpay, overpay refund)
-- ✅ Owner-only: `setMintPrice`, `setBaseURI`, `withdraw`
-- ✅ Event emission
-- ✅ `tokenURI` correctness
 
 ### API unit tests
 
@@ -218,16 +211,6 @@ Covers:
 npm run test:api
 ```
 
-Covers (all blockchain calls are mocked with Sinon):
-- ✅ Happy path — returns `txHash` and `tokenId`
-- ✅ Address normalisation (lowercase → checksum)
-- ✅ Missing / invalid `walletAddress` → `400`
-- ✅ Max supply error → `409`
-- ✅ Insufficient funds → `503`
-- ✅ Network error → `503`
-- ✅ Unexpected error → `500`
-- ✅ Health check
-- ✅ Unknown route → `404`
 
 ### Run all tests
 
@@ -241,35 +224,7 @@ npm test
 npm run gas-report
 ```
 
----
 
-## 🔐 Security Measures
-
-### Smart Contract
-
-| Measure | Implementation |
-|---------|---------------|
-| Reentrancy protection | `ReentrancyGuard` from OpenZeppelin |
-| Access control | `Ownable` — owner-only admin functions |
-| Supply cap | Hard-coded `MAX_SUPPLY = 5` constant |
-| Payment validation | Custom `InsufficientPayment` error with exact amounts |
-| Overpayment refund | Excess ETH returned to sender automatically |
-| Safe minting | `_safeMint` checks recipient can receive ERC-721 |
-| Input validation | `ZeroAddress` check on recipient |
-| Custom errors | Gas-efficient `revert` with typed errors |
-
-### API
-
-| Measure | Implementation |
-|---------|---------------|
-| Helmet | HTTP security headers |
-| Rate limiting | 20 req / 15 min per IP |
-| Input validation | `ethers.isAddress` check before any contract call |
-| Private key security | Stored in `.env`, never logged or exposed |
-| Error sanitisation | Production mode returns generic messages |
-| Singleton provider | RPC connection reused (no connection leak) |
-
----
 
 ## 🗺️ Deployed Contract
 
@@ -277,30 +232,6 @@ npm run gas-report
 |---------|-----------------|---------|
 | Polygon Mumbai | `0xYOUR_CONTRACT_ADDRESS` | [View on Polygonscan](https://mumbai.polygonscan.com/address/0xYOUR_CONTRACT_ADDRESS) |
 
----
-
-## 📝 Contract ABI (mint function)
-
-```json
-{
-  "inputs": [{ "internalType": "address", "name": "to", "type": "address" }],
-  "name": "mint",
-  "outputs": [],
-  "stateMutability": "payable",
-  "type": "function"
-}
-```
-
----
-
-## 🤝 Contributing
-
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Commit your changes: `git commit -m 'feat: add my feature'`
-4. Push and open a PR
-
----
 
 ## 📄 License
 
